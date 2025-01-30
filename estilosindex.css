@@ -1,0 +1,17 @@
+.welcome-mensaje {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.logout-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
