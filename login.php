@@ -29,5 +29,6 @@ if(isset($_GET['mensaje'])){
             <?php echo $mensaje ?>
         </div>
     </form>
+    <a href="register.php">Crear nueva cuenta</a>
 </body>
 </html>
