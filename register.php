@@ -8,74 +8,87 @@ $password = '';
 $BDusuarios = 'MiBasedeDatos';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//Establecer la conexion con la base de datos
-try {
-    $conexion = mysqli_connect($host, $usuario, $password, $BDusuarios);
-    $sql = "SELECT password,email FROM usuarios";
-    $query = mysqli_query($conexion, $sql);
-    //Como lo quiere Noemi
-    while ($fila = $query->fetch_assoc()) {
+    //Establecer la conexion con la base de datos
+    try {
+        $conexion = mysqli_connect($host, $usuario, $password, $BDusuarios);
+        $sql = "SELECT password,email FROM usuarios";
+        $query = mysqli_query($conexion, $sql);
+        //Como lo quiere Noemi
+        while ($fila = $query->fetch_assoc()) {
 
-        $usuarios[] = $fila;
+            $usuarios[] = $fila;
+        }
+        //Forma Andres
+        //$usuarios=$query->fetch_all(MYSQLI_ASSOC);
+
+    } catch (Exception $e) {
+
+        echo $e->getMessage();
     }
-    //Forma Andres
-    //$usuarios=$query->fetch_all(MYSQLI_ASSOC);
 
-} catch (Exception $e) {
+    // Obtener datos del formulario
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    $edad = $_POST['edad'];
+    $contraseña = $_POST['contraseña'];
+    $emailenuso = false;
+    foreach ($usuarios as $user) {
 
-    echo $e->getMessage();
-}
-
-// Obtener datos del formulario
-$nombre = $_POST['nombre'];
-$email = $_POST['email'];
-$edad = $_POST['edad'];
-$contraseña = $_POST['contraseña'];
-$emailenuso=false;
-foreach($usuarios as $user){
-    
-    if($email==$user['email']){
-        $emailenuso=true;
-
+        if ($email == $user['email']) {
+            $emailenuso = true;
+        }
     }
-}
 
-if($emailenuso==false){
+    if ($emailenuso == false) {
 
-$sql = "INSERT INTO usuarios (edad, nombre, password,email) VALUES ('$edad','$nombre','$contraseña','$email')";
-mysqli_query($conexion, $sql);
-echo "registro exitoso";
-}else{
-    echo "El email ya existe";
-}
+        $sql = "INSERT INTO usuarios (edad, nombre, password,email) VALUES ('$edad','$nombre','$contraseña','$email')";
+        mysqli_query($conexion, $sql);
+        echo "registro exitoso";
+    } else {
+        echo "El email ya existe";
+    }
 
-$conexion->close();
+    $conexion->close();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <link rel="stylesheet" type="text/css" href="estiloslogin.css">
     <link rel="stylesheet" type="text/css" href="estilosgeneral.css">
 </head>
+
 <body>
-    <h1>Registro de Usuario</h1>
-    <form action="register.php" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" id="contraseña" name="contraseña" required><br><br>
+    <header>
+    <h1>Login</h1>
+    </header>
+    <main>
+        <h2>Registro de Usuario</h2>
+        <div class="container">
+        <form action="register.php" method="POST">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required><br><br>
 
-        <label for="edad">Edad:</label>
-        <input type="number" id="number" name="edad" required><br><br>
-        
-        <button type="submit">Enviar</button> <br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
 
-        <a href="login.php">Iniciar sesión</a>
-    </form>
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required><br><br>
+
+            <label for="edad">Edad:</label>
+            <input type="number" id="number" name="edad" required><br><br>
+
+            <button type="submit">Enviar</button> <br>
+        </div>
+            <a href="login.php">Iniciar sesión</a>
+
+        </form>
+    </main>
+    <footer>
+    <a href="https://github.com/JuanBMPg">JuanBMPg</a>
+    </footer>
 </body>
+
 </html>
