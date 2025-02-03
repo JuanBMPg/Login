@@ -1,0 +1,515 @@
+/*
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big,
+cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike,
+strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+center, u, b, i{vertical-align: baseline border: 0; outline: 0;
+                font-weight: normal; font-style: normal; font-size: 100%; font-family: inherit;}
+*               {margin: 0; padding: 0}
+body            {line-height: 1; height:100%}
+:focus          {outline: 0}
+ol, ul          {list-style: none}
+table           {border-collapse: collapse; border-spacing: 0;}
+blockquote, q   {quotes: "" ""}
+hr              {border: 0; color: #000; background-color: #000; height:1px}
+blockquote:before, blockquote:after, q:before, q:after {content: ""}
+*/
+/*
+3498DB --> Azul claro
+003f7f --> Azul Oscuro
+------
+c9c9c9 --> Gris claro
+969696 --> Gris Oscuro
+------
+FEF0DB --> FondoAmarillo
+FFA824 -->FondoAmarilloOscuro
+*/
+:root {
+    --color-tabla: #0057af;
+  }
+  
+  *:focus {
+      outline: 0;
+  }
+  
+  body, .fondoBody{
+      background:#BDF url(../imagenes/fondo.jpg);
+      background-attachment: fixed;
+  }
+  
+  input[type=text], [type=password], input[type=time], input[type=number], textarea, select { 
+      padding: 2px;
+      border-radius: 3px;
+      border: solid 2px #c9c9c9;
+      transition: box-shadow 0.3s, border 0.3s;
+  }
+  input[type=text]:focus, [type=password]:focus, input[type=time]:focus, input[type=number]:focus, textarea:focus, select:focus { 
+      border: solid 2px #336fAf;
+      box-shadow: 0 0 5px 1px #003f7f;
+  }
+  
+  select {
+      margin: 0;
+      background: #FFFFFF;
+      color:#000000;
+      display: inline-block;
+      cursor:pointer;
+  }
+  
+  table a:link {color: #000000;}
+  table a:visited {color: #000000;}
+  table a:hover {text-decoration: none;}
+  table a:active {text-decoration: none;}
+  
+  #imgLoading {
+      position:fixed;
+      z-index:1;
+      top:50%; 
+      left: 50%; 
+      margin-top: -27px;
+      margin-left: -27px;
+  }
+  
+  #capaInhabilitar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 99;
+      width:100%;
+      height:100%;
+      background-color: #000;
+      opacity: 0.3;
+  }
+  
+  .ventanaFlotante{
+      border: 3px solid #000000;
+      border-radius: 6px;
+      top: 90px;
+      left: 5%;
+      position: fixed;
+      height: 350px;
+      z-index: 101;
+      display: none;
+      background-color: #BDF; 
+      background-image: url(../imagenes/loading.gif),  url(../imagenes/fondo.jpg); 
+      background-repeat:no-repeat, repeat; 
+      background-position:center;
+  }
+  
+  .cerrarVentanaFlotante{
+      top: 80px;
+      left: 5%; 
+      position: fixed; 
+      z-index: 102;
+      border: 3px solid #000000;
+      border-radius: 50%;
+      background: #000000;
+      display: none;
+      cursor: pointer;
+  }
+  
+  .ventanaAsientos{
+      width: 155px; 
+      height: 410px; 
+      position:absolute; 
+      display:none; 
+      border: 3px solid #000000;
+      background-color:#BDF;
+      background-image: url(../imagenes/loading2.gif),  url(../imagenes/fondo.jpg);
+      background-repeat:no-repeat,repeat; 
+      background-position:center;
+  }
+  
+  .boxShadow {
+      -moz-box-shadow:4px 4px 5px #000000;
+      -webkit-box-shadow:4px 4px 5px #000000;
+      box-shadow:4px 4px 5px #000000;
+  }
+  
+  .cursorNormal{cursor: default;}
+  
+  .cursorMano{cursor: pointer;}
+  
+  .centrado {
+      text-align: center;
+  }
+  
+  .fondoAmarillo{
+      background-color:#FEF0DB;
+      color:#000000;
+  }
+  
+  .fondoBlanco{
+      background-color:#FFFFFF;
+      color:#000000;
+  }
+  
+  .fondoAmarilloOscuro{
+      background-color:#FFA824;
+      color:#FFFFFF;
+  }
+  
+  .sinSeleccion {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -ms-user-select:none;
+  }
+  
+  .divBuscador input[type=submit], .divBuscador input[type=button], .myButton {
+      text-shadow: 0px 1px rgba(0, 0, 0, 0.2);
+      text-align:center;
+      text-decoration: none;
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      display:inline-block;
+      color: #FFF;
+      background: #3498DB;
+      border: 1px solid #2980B9;
+      padding: 6px 20px;
+      white-space: nowrap;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -webkit-transition: all 0.2s ease-in-out;
+      -ms-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+  }
+  .divBuscador input[type=submit]:hover, .divBuscador input[type=button]:hover, .myButton:hover {
+      background: #39a0e5;
+      cursor:pointer;
+  }
+  
+  .divBuscador {
+      background-color:#EFEFEF;
+      border-radius:5px;
+      border:1px solid #D0D0D0;
+      overflow:auto;
+      float:left;
+      padding: 5px;
+      margin-bottom: 10px;
+  }
+  .divBuscador input[type=text]{
+      text-align: center;
+  }
+  .divBuscador input[type=submit], .divBuscador input[type=button]{
+      margin-left: 3px;
+  }
+  
+  .myTable { /*Tabla con colores alternos. No seleccionable*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTable tr:nth-child(odd){background-color: #aad4ff;}
+  .myTable tr:nth-child(even){background-color:#ffffff;}
+  .myTable td{
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:0px 1px 1px 0px;
+      padding:5px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:normal;
+  }
+  .myTable tr:first-child td{
+      background-color: var(--color-tabla);
+      border:0px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:14px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+  }
+  
+  .myTable2{/*Tabla seleccionable*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTable2 tbody tr{
+      background-color:#FFF;
+  }
+  .myTable2 tbody tr:hover td{
+      background-color:#CCC;
+      cursor: pointer;
+  }
+  .myTable2 td{
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:5px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myTable2 thead tr td{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:14px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: pointer;
+  }
+  .myTable2 tfoot{
+      background-color:#FFF;
+  }
+  
+  .myTinyTable2{/*Tabla seleccionable con fuente mas pequeña*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTinyTable2 tbody tr{
+      background-color:#FFF;
+  }
+  .myTinyTable2 tbody tr:hover td{
+      background-color:#CCC;
+      cursor: pointer;
+  }
+  .myTinyTable2 td{
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:2px;
+      font-size:11px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myTinyTable2 thead tr td{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: pointer;
+  }
+  .myTinyTable2 tfoot{
+      background-color:#FFF;
+  }
+  
+  .myTable3{/*Tabla de un solo color. No seleccionable*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTable3 td{
+      background-color:#FFF;
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:5px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myTable3 thead tr td{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:14px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: default;
+  }
+  
+  .myTable3Red{/*Tabla de un solo color. No seleccionable*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTable3Red td{
+      background-color:#FFF;
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:5px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myTable3Red thead tr td{
+      background-color:#FF0000;
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:14px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: default;
+  }
+  
+  .myTable4{/*Tabla seleccionable cada td por separado*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTable4 tbody td{
+      background-color:#FFF;
+  }
+  .myTable4 tbody td:hover td{
+      background-color:#CCC;
+      cursor: pointer;
+  }
+  .myTable4 td{
+      background-color:#FFF;
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:2px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myTable4 thead td{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: default;
+  }
+  
+  .myTable5{/*Tabla seleccionable de doble entrada*/
+      width:100%;
+      border:1px solid #000000;
+  }
+  .myTable5 tr:first-child td{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: default;
+  }
+  .myTable5 td:first-child{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: default;
+  }
+  .myTable5 td:first-child:hover{
+      cursor: default;
+  }
+  .myTable5 tbody td{
+      background-color:#FFFFFF;
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:2px;
+      font-size:11px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myTable5 tbody td:hover{
+      background-color:#CCC !important;
+      cursor: pointer;
+  }
+  
+  .headerAsc, .headerDesc {
+      color:#FF6600 !important;
+  }
+  
+  .myCheck {
+      background-color:#EFEFEF;
+      border-radius:4px;
+      border:1px solid #D0D0D0;
+      overflow:auto;
+      float:left;
+  }
+  .myCheck:hover {
+      background-color:#EFEFEF;
+      border-radius:4px;
+      border:1px solid #D0D0D0;
+      overflow:auto;
+      float:left;
+  }
+  .myCheck:hover > input{
+      background-color:#EFEFEF;
+  }
+  .myCheck input+span:hover{
+      background-color: var(--color-tabla);
+      color:#fff;
+      cursor: pointer;
+  }
+  .myCheck label {
+      float:left;
+  }
+  .myCheck label span {
+      text-align:center;
+      padding:5px;
+      display:block;
+      font-weight: bold;
+  }
+  .myCheck label input {
+      position:absolute;
+      top:-20px;
+  }
+  .myCheck input:checked + span {
+      background-color: var(--color-tabla);
+      color:#fff;
+  }
+  
+  .myNormalTable td{ /*Se usa en mantenimiento/serviciosRooming.php*/
+      background-color:#FFF;
+      vertical-align:middle;
+      border:1px solid #000000;
+      border-width:1px 1px 1px 1px;
+      padding:5px;
+      font-size:12px;
+      font-family:Arial;
+      font-weight:bold;
+  }
+  .myNormalTable thead tr td{
+      background-color: var(--color-tabla);
+      border:1px solid #000000;
+      text-align:center;
+      border-width:1px 1px 1px 1px;
+      font-size:14px;
+      font-family:Arial;
+      font-weight:bold;
+      color:#ffffff;
+      cursor: default;
+  }
+  
+  .enlaceBotonBlanco{
+      text-shadow: 0px 1px rgba(0, 0, 0, 0.2);
+      text-align:center;
+      text-decoration: none;
+      font-weight:bold;
+      display:inline-block;
+      color: #797979;
+      background: #f6f6f6;
+      border: 1px solid #fff;
+      padding: 6px 30px;
+      white-space: nowrap;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -webkit-transition: all 0.2s ease-in-out;
+      -ms-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+  }
+  
+  .enlaceBotonBlanco:hover{
+      background: #fff;
+  }
