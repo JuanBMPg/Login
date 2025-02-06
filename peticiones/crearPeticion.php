@@ -1,15 +1,19 @@
 <?php
+
+use PhpOption\Option;
+
 session_start();
 
 $host = 'localhost';
 $usuario = 'root';
 $password = '';
-$BDusuarios = 'MiBasedeDatos';
+$BDusuarios = 'wellcome15';
 $usuarios = [];
+
 
 try {
     $conexion = mysqli_connect($host, $usuario, $password, $BDusuarios);
-    $sql = "SELECT password,email FROM usuarios";
+    $sql = "SELECT id,nombre FROM usuarios";
     $query = mysqli_query($conexion, $sql);
     //Como lo quiere Noemi
     while ($fila = $query->fetch_assoc()) {
@@ -23,52 +27,162 @@ try {
 
     echo $e->getMessage();
 }
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  
-    $consulta= "SELECT * FROM peticion";
-    mysqli_query($conexion,$consulta);
 
-    echo $consulta;
+    $creador = $_POST['usuarioCreador'];
+    $asignado = $_POST['usuarioAsignado'];
+    $para = $_POST['para'];
+    $de = $_POST['de'];
+    $fecha = $_POST['fecha'];
 
-   
+    $stmt = $conexion->prepare("INSERT INTO peticiones (para,de,fechaCreacion,creadorUsuario,asignadoUsuario) VALUES (?, ?,?,?,?)");
+    $stmt->bind_param("sssss", $para, $de, $fecha, $creador, $asignado);
+
+    $id = '';
+
+    if ($stmt->execute()) {
+        $id = $stmt->insert_id;
+        echo "Nuevo registro creado exitosamente";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
 
 
-    
+
+    if (isset($_FILES['pdf']) && $_FILES['pdf']['error'] == UPLOAD_ERR_OK) {
+
+        $fileTmpPath = $_FILES['pdf']['tmp_name'];
+        $fileName = $_FILES['pdf']['name'];
+        $fileSize = $_FILES['pdf']['size'];
+        $fileType = $_FILES['pdf']['type'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+
+        echo $fileType;
+
+        if ($fileType == 'application/pdf') {
+
+            $dest_path = 'pdfs/' . $id . '.pdf';
+
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                echo "El archivo se ha subido correctamente: " . $dest_path;
+            } else {
+                echo "Hubo un error al mover el archivo al directorio de destino.";
+            }
+        } else {
+            echo "Por favor, sube un archivo PDF.";
+        }
+    }
+    header("Location: listadoPeticiones.php");
+    exit();
 }
-/*header('Location: listadoPeticiones.php');
-exit;*/
+
 ?>
 
 <!DOCTYPE html>
+
 <head>
- <link rel="stylesheet" type="text/css" href="wellcome.css">
+    <link rel="stylesheet" type="text/css" href="wellcome.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+    <!-- jQuery Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 </head>
+
 <body>
     <header>
-    <h2>Crear peticion</h2>
+        <h2>Crear peticion</h2>
     </header>
     <div class="container">
-    <form action="crearPeticion.php" method="post" enctype="multipart/form-data">
-        <label for="usuario">UsuarioCreador:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
-        
-        <label for="usuarioAsignado">Usuario Asignado:</label>
-        <input type="text" id="usuarioAsignado" name="usuarioAsignado" required><br><br>
+        <form action="crearPeticion.php" method="post" enctype="multipart/form-data" id="formularioPeticion">
 
-        <label for="peticion">Peticion:</label>
-        <input type="text" id="peticion" name="peticion" required><br><br>
+            <label for="usuarioCreador">Creador:</label>
+            <select name="usuarioCreador" id="usuarioCreador">
+                <?php
 
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required><br><br>
+                for ($i = 0; $i < count($usuarios); $i++) {
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" required><br><br>
-        
-        <button type="submit">Enviar</button>
+                    $idusuarios = $usuarios[$i]['id'];
+                    $nombre = $usuarios[$i]['nombre'];
+                    echo "<option value='$idusuarios'>$nombre</option>";
+                }
+
+                ?>
+            </select>
+
+
+            <label for="usuarioAsignado">Asignado:</label>
+            <select name="usuarioAsignado" id="usuarioAsignado">
+                <?php
+
+                for ($i = 0; $i < count($usuarios); $i++) {
+
+                    $idusuarios = $usuarios[$i]['id'];
+                    $nombre = $usuarios[$i]['nombre'];
+                    echo "<option value='$idusuarios'>$nombre</option>";
+                }
+
+                ?>
+            </select>
+            <label for="peticion">Peticion:</label>
+            <input type="text" id="peticion" name="peticion" required><br><br>
+
+            <label for="para">Para:</label>
+            <input type="email" id="para" name="para" required><br><br>
+
+
+            <label for="de">De:</label>
+            <input type="email" id="de" name="de" required><br><br>
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required><br><br>
+
+            <label for="pdf">Selecciona un archivo PDF:</label>
+            <input type="file" name="pdf" id="pdf" accept="application/pdf">
+            <br><br>
+
+            <button type="submit">Enviar</button>
+
+            <script>
+                let id = <?php echo $id ?>
+
+                $(document).ready(function() {
+                    // Capturar el formulario y enviarlo por AJAX
+                    $("#formularioPeticion").submit(function(e) {
+                        e.preventDefault(); // Evitar el envío normal del formulario
+
+                        let form = $(this);
+                        let actionUrl = "crearPeticion.php";
+
+                        $.ajax({
+                            type: "POST",
+                            url: actionUrl,
+                            data: form.serialize(),
+                            success: function(data) {
+                                // Mostrar el modal después de procesar la petición
+                                $('#modal').modal('show');
+                            }
+                        });
+                    });
+
+                    // Capturar el click en el botón de enviar email dentro del modal
+                    $("#idBotonEnviarMail").click(function() {
+                        window.location.href = `enviarMail.php?id=${id}`;
+                    });
+
+                    $("#idBotonNoEnviarMail").click(function() {
+                        window.location.href = "listadoPeticiones.php";
+                    })
+                });
+            </script>
     </div>
-        
+
     </form>
-   
+
 </body>
+
 </html>
