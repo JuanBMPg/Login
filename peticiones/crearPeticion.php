@@ -75,9 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Por favor, sube un archivo PDF.";
         }
     }
-    header("Location: listadoPeticiones.php");
-    exit();
+    //header("Location: listadoPeticiones.php");
+    //exit();
 }
+
 
 ?>
 
@@ -85,10 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <link rel="stylesheet" type="text/css" href="wellcome.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-
-    <!-- jQuery Modal -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 </head>
@@ -147,42 +144,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <button type="submit">Enviar</button>
 
-            <script>
-                let id = <?php echo $id ?>
 
-                $(document).ready(function() {
-                    // Capturar el formulario y enviarlo por AJAX
-                    $("#formularioPeticion").submit(function(e) {
-                        e.preventDefault(); // Evitar el envío normal del formulario
-
-                        let form = $(this);
-                        let actionUrl = "crearPeticion.php";
-
-                        $.ajax({
-                            type: "POST",
-                            url: actionUrl,
-                            data: form.serialize(),
-                            success: function(data) {
-                                // Mostrar el modal después de procesar la petición
-                                $('#modal').modal('show');
-                            }
-                        });
-                    });
-
-                    // Capturar el click en el botón de enviar email dentro del modal
-                    $("#idBotonEnviarMail").click(function() {
-                        window.location.href = `enviarMail.php?id=${id}`;
-                    });
-
-                    $("#idBotonNoEnviarMail").click(function() {
-                        window.location.href = "listadoPeticiones.php";
-                    })
-                });
-            </script>
+        </form>
     </div>
+    <div id="ex1" class="modal">
+        <p>Quieres enviar un mail a la peticion.</p>
+        <button type="button" id="Si">Si</button>
 
-    </form>
+        <button type="button" id="No">No</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+ 
+    <script src="script.js"></script>
 </body>
 
 </html>

@@ -24,14 +24,14 @@ try {
 }
 
 
-// Verificar si se ha enviado el ID
+
 if (isset($_POST['id'])) {
-    //$id = intval($_POST['id']); 
+    $id = intval($_POST['id']); 
  
-    // Preparar la consulta para eliminar el registro
-    $sql = "DELETE FROM peticiones WHERE id = $id";
+   
+    $sql = "DELETE FROM peticiones WHERE id = ?";
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("s", $id);
+    $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
         $id = $stmt->insert_id;
@@ -47,6 +47,6 @@ if (isset($_POST['id'])) {
 
 $conexion->close();
 
-// Redirigir de vuelta a la página anterior (opcional)
-//header("Location: listadoPeticiones.php"); // Cambia 'listado.php' por el nombre de tu archivo
-//exit();
+
+header("Location: listadoPeticiones.php"); 
+exit();

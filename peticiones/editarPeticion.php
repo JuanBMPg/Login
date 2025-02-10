@@ -100,17 +100,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <label for="editarid">Fecha creacion:</label>
         <input type="date" id="editarFechaCreacion" name="editarFechaCreacion" value="<?php echo date('Y-m-d', strtotime($peticion[0]['fechaCreacion'])) ?>"> <br><br>
-        
 
-        <embed src="pdfs/<?php echo $id?>.pdf" type="application/pdf"  width="800" height="500"> <br><br>
+
+        <embed src="pdfs/<?php echo $id ?>.pdf" type="application/pdf" width="800" height="500"> <br><br>
 
 
 
         <button type="submit">Editar</button>
-        
+
     </form>
 
     <form action="eliminarPeticion.php" method="post">
+        <input type="hidden" name="id" value="<?php echo $id ?>">
         <button type="submit">Eliminar peticion</button>
     </form>
 
